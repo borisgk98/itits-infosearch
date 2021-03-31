@@ -1,7 +1,9 @@
 import re
 import os
 from functools import cmp_to_key
-from hw2.tokenize_lemmatize import tokenize, get_normal_form
+from hw2.tokenize_lemmatize import get_normal_form
+from utilz.utils import get_tokenize_res
+from utilz.const import limit as LIMIT
 
 
 class WordInfo:
@@ -45,23 +47,15 @@ def sort_index(index):
     return dict(sorted(index.items(), key=cmp_to_key(comparator), reverse=True))
 
 
-def get_text(file):
-    stream = os.popen('xmllint --html --xpath \"//body//text()\" ' + file + " 2>/dev/null")
-    res = stream.read()
-    return res
-
-
 def generate_word_map(map):
     index = dict()
-    dir = '../data/doc'
-    limit = 100
+    dir = '../data/doc-tokenize'
     i = 0
     for file in os.listdir(dir):
-        if i > limit:
+        if i > LIMIT:
             break
         i += 1
-        text = get_text(dir + '/' + file)
-        tokenize_res = tokenize(text)
+        tokenize_res = get_tokenize_res(dir + '/' + file)
         word_used = set()
         for word in tokenize_res:
             normal_form = get_normal_form(word)
@@ -94,6 +88,7 @@ def create_index():
     index = generate_word_map(map)
     sorted_index = sort_index(index)
     write_index(sorted_index)
+
 
 if __name__ == '__main__':
     create_index()

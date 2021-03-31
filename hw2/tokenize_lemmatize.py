@@ -1,6 +1,7 @@
 import os
 import nltk
 import pymorphy2
+from utilz.utils import get_data
 
 # nltk.download('all')
 # nltk.download('wordnet')
@@ -10,11 +11,6 @@ raw_file = "out.txt"
 
 def preprocessing():
     os.system("bash ./get-raw-data-and_preprocess.sh " + raw_file)
-
-
-def get_data(file):
-    with open(file, 'r') as file:
-        return file.read()
 
 
 def tokenize(data):
