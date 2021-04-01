@@ -94,6 +94,8 @@ def boolean_search(query, index):
 
     operands = ("(", ")", "&", "|")
     res_query = []
+    parsed_query = []
+    parsed_query_words = []
     last = None
 
     def get_or_default(x):
@@ -107,26 +109,46 @@ def boolean_search(query, index):
         if s[0] == "(":
             if last is not None and last not in operands:
                 res_query.append("&")
+                parsed_query.append("&")
             res_query.append("(")
             res_query.append(get_or_default(s[1:]))
+
+            parsed_query.append("(")
+            parsed_query.append(s[1:])
+
+            parsed_query_words.append(s[1:])
         elif s[-1] == ")":
             if last is not None and last not in operands:
                 res_query.append("&")
             res_query.append(get_or_default(s[:-1]))
             res_query.append(")")
+
+            parsed_query.append(s[:-1])
+            parsed_query.append(")")
+
+            parsed_query_words.append(s[:-1])
         elif s in operands:
             res_query.append(s)
+            parsed_query.append(s)
         else:
             if (last is not None and last not in operands) or (last is not None and last == ")"):
                 res_query.append("&")
                 res_query.append(get_or_default(s))
+
+                parsed_query.append("&")
+                parsed_query.append(s)
+
+                parsed_query_words.append(s)
             else:
                 res_query.append(get_or_default(s))
+                parsed_query.append(s)
+                parsed_query_words.append(s)
         last = s
-    print(compute_query(res_query, func_bi, {}, func_p))
+    return compute_query(res_query, func_bi, {}, func_p), parsed_query, parsed_query_words
 
 
 if __name__ == '__main__':
     # boolean_search("Устройство громкого оповещения", read_index())
-    boolean_search("(Новые области) | России", read_index("index.txt"))
+    res, _, _ = boolean_search("(Новые области) | России", read_index("index.txt"))
+    print(res)
     # print(compute_query([1, "+", "(", "-", 2, ")"], {"+": lambda x, y: x + y}, {"-": lambda x: -x}, {"+": 1, "-": 2}))
