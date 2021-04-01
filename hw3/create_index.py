@@ -50,11 +50,9 @@ def sort_index(index):
 def generate_word_map(map):
     index = dict()
     dir = '../data/doc-tokenize'
-    i = 0
     for file in os.listdir(dir):
-        if i > LIMIT:
-            break
-        i += 1
+        if int(file[:-4]) > LIMIT:
+            continue
         tokenize_res = get_tokenize_res(dir + '/' + file)
         word_used = set()
         for word in tokenize_res:
@@ -67,7 +65,7 @@ def generate_word_map(map):
                     count += tokenize_res.count(similar_word)
                 if normal_form not in index.keys():
                     index[normal_form] = WordInfo()
-                index[normal_form].append_document_info(file[:-5], count)
+                index[normal_form].append_document_info(file[:-4], count)
         print("end of reading doc ", file)
     return dict(sorted(index.items()))
 

@@ -23,11 +23,9 @@ if __name__ == '__main__':
     index = dict()
     dir = '../data/doc/'
     outdir = '../data/doc-tokenize/'
-    i = 0
     for file in os.listdir(dir):
-        if i > LIMIT:
-            break
-        i += 1
+        if int(file[:-5]) > LIMIT:
+            continue
         text = preprocessing(dir + file)
         tokenize_res = tokenize(text)
         write(tokenize_res, outdir + file[:-5] + ".txt")

@@ -1,18 +1,17 @@
 import os
 from hw2.tokenize_lemmatize import get_normal_form
 from utilz.utils import get_tokenize_res
+from utilz.const import limit as LIMIT
 
 
 def compute_tf():
     tf = dict()
     dir = '../data/doc-tokenize'
     limit = 100
-    i = 0
     for file in os.listdir(dir):
-        if i > limit:
-            break
+        if int(file[:-4]) > LIMIT:
+            continue
         tf_page = dict()
-        i += 1
         tokenize_res = get_tokenize_res(dir + '/' + file)
         for word in tokenize_res:
             normal_form = get_normal_form(word)
@@ -24,8 +23,8 @@ def compute_tf():
             if key not in tf.keys():
                 tf[key] = []
             tf_val = round(value / len(tokenize_res), 6)
-            tf[key].append((file[:-5], tf_val))
-        print("read tf for", file[:-5])
+            tf[key].append((file[:-4], tf_val))
+        print("read tf for", file[:-4])
     return dict(sorted(tf.items()))
 
 
