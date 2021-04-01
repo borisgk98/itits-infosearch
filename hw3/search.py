@@ -2,8 +2,8 @@ import re
 from hw2.tokenize_lemmatize import get_normal_form
 
 
-def read_index():
-    f = open("index.txt", "r")
+def read_index(file):
+    f = open(file, "r")
     lines = f.readlines()
     map = dict()
     for line in lines:
@@ -128,5 +128,5 @@ def boolean_search(query, index):
 
 if __name__ == '__main__':
     # boolean_search("Устройство громкого оповещения", read_index())
-    boolean_search("(Новые области) | России", read_index())
+    boolean_search("(Новые области) | России", read_index("index.txt"))
     # print(compute_query([1, "+", "(", "-", 2, ")"], {"+": lambda x, y: x + y}, {"-": lambda x: -x}, {"+": 1, "-": 2}))
