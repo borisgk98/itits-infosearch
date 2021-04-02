@@ -244,3 +244,4 @@ Thumbs.db #thumbnail cache on Windows
 *.html
 /hw2/out.txt
 /data/doc-tokenize/
+/demo/data/html/
