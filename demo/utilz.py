@@ -5,6 +5,7 @@ morph = pymorphy2.MorphAnalyzer()
 
 
 def execute(cmd):
+    print("execute command: %s" % cmd)
     stream = os.popen(cmd)
     res = stream.read()
     return res

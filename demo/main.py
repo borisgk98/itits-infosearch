@@ -22,6 +22,26 @@ def search():
     return jsonify(json)
 
 
+@app.route("/pageinfo", methods=['GET'])
+def search_hash():
+    url = str(escape(request.args.get("url", "")))
+    print(url)
+    hash = index.hash_url(url)
+    if not hash in index.hash_index:
+        return app.response_class(
+            status=404,
+            mimetype='application/json'
+        )
+    info = index.hash_index[hash].__dict__
+    info["hash"] = hash
+    tokens = []
+    for token in index.reverse_index.keys():
+        if hash in index.reverse_index[token].documents:
+            tokens.append(token)
+    info["tokens"] = tokens
+    return jsonify(info)
+
+
 @app.route("/index", methods=['GET'])
 def get_index():
     print(index.reverse_index)

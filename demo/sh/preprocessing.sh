@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # shellcheck disable=SC2011
-xmllint --html --xpath "//body//text()" $1 2>/dev/null \
+cat $1 \
   | sed -n 's/[^A-Za-z\s\Sа-яА-Я0-9]/ /pg'\
   | sed -n 's/[\x5C]/ /pg'\
   | tr -s " " \

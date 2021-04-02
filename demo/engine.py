@@ -5,6 +5,7 @@ from demo.index import index
 
 
 def boolean_search(query):
+    query = query.strip()
     func_bi = {
         "&": lambda x, y: x & y,
         "|": lambda x, y: x | y
